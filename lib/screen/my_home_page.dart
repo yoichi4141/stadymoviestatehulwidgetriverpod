@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_state_notifier/flutter_state_notifier.dart';
-import 'package:provider/provider.dart';
-import 'package:stadymoviestatehulwidget/state/my_home_state.dart';
-import 'package:stadymoviestatehulwidget/view_model/my_home_view_model.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import 'package:stadymoviestatehulwidget/main.dart';
 
 class MyHomePage extends StatelessWidget {
   const MyHomePage({super.key});
@@ -10,8 +9,7 @@ class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print('MyHomePageをビルド');
-    return StateNotifierProvider<MyHomePageStateNotifier, MyHomePageState>(
-      create: (context) => MyHomePageStateNotifier(),
+    return ProviderScope(
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,
@@ -45,13 +43,13 @@ class WidgetA extends StatelessWidget {
   }
 }
 
-class WidgetB extends StatelessWidget {
+class WidgetB extends ConsumerWidget {
   const WidgetB({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     print('widgetBをビルド');
-    final int counter = context.watch<MyHomePageState>().counter;
+    final int counter = ref.watch(myHomePageProvider).counter;
     return Text(
       '$counter',
       style: Theme.of(context).textTheme.headlineMedium,
@@ -59,14 +57,13 @@ class WidgetB extends StatelessWidget {
   }
 }
 
-class WidgetC extends StatelessWidget {
+class WidgetC extends ConsumerWidget {
   const WidgetC({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     print('widgetCをビルド');
-    final Function increment =
-        context.read<MyHomePageStateNotifier>().increment;
+    final Function increment = ref.read(myHomePageProvider.notifier).increment;
     return ElevatedButton(
         onPressed: () {
           increment();

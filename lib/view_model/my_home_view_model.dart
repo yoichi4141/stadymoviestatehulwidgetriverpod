@@ -1,5 +1,5 @@
-import 'package:flutter_state_notifier/flutter_state_notifier.dart';
 import 'package:stadymoviestatehulwidget/state/my_home_state.dart';
+import 'package:riverpod/riverpod.dart';
 
 class MyHomePageStateNotifier extends StateNotifier<MyHomePageState> {
   MyHomePageStateNotifier() : super(const MyHomePageState());
